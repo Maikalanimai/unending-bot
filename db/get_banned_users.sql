@@ -1,0 +1,1 @@
+select tag from banned_users

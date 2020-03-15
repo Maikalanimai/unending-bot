@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "clash-of-clans-api": "^0.6.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "massive": "^6.2.0",
+    "nodemon": "^2.0.2"
+  },
+  "main": "server.js"
+}
