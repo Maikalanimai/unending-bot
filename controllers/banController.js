@@ -6,20 +6,24 @@ let client = clashApi({
   token: API_TOKEN
 });
 
+const guildList = ["#9VG088JL", "#Y2GRV0V", "#9QJUUGUQ"];
+
 module.exports = {
   banUser(req, res) {
     const db = req.app.get("db");
-    const { id } = req.query;
+    const { tag } = req.query;
+    console.log('req.query', req.query)
+    console.log('inside ban user in server',tag)
     //!Make sure id is formated as %23 tag no hash when sent to server
-    db.check_banned_user(id).then(result => {
-      // console.log(result);
+    db.check_banned_user(tag).then(result => {
+      console.log(result);
       if (result[0]) {
-        return res.status(409).send({ message: "User Already in Ban list" });
+        return res.status(200).send({ message: "User Already in Ban list" });
       } else {
-        db.add_banned_user(id).then(() => {
+        db.add_banned_user(tag).then(() => {
           return res
             .status(200)
-            .send({ message: `User ${id} was added to the ban list` });
+            .send({ message: `User ${tag} was added to the ban list` });
         });
       }
     });
@@ -35,14 +39,13 @@ module.exports = {
         ? res.status(200).send({ message })
         : res.status(200).send({ message: "No banned members in the clans" });
     }
-    await client.clanMembersByTag("#9VG088JL").then(responseUn => {
-      members = responseUn.items.map(e => {
-        return e.tag;
-      });
-      client.clanMembersByTag("#Y2GRV0V").then(responseTso => {
-        responseTso.items.map(e => members.push(e.tag));
-      });
-    });
+    await Promise.all(
+      guildList.map(tag => {
+        client.clanMembersByTag(tag).then(response => {
+          response.items.forEach(e => members.push(e.tag));
+        });
+      })
+    );
     await db.get_banned_users().then(result => {
       console.log(result);
       result.forEach(e => {
