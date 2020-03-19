@@ -11,6 +11,7 @@ app.use(express.json())
 
 app.post('/api/ban', banCtrl.banUser)
 app.get('/api/test', banCtrl.test)
+app.get('/api/list', banCtrl.list)
 
 massive(CONNECTION_STRING).then(db => {
   app.set('db', db)

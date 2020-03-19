@@ -20,28 +20,40 @@ client.on("message", message => {
   console.log("message obtained");
   let content = message.content;
   // console.log(content)
-  let splitCont = content.split("");
+  let checkPre = content.split("");
   // console.log(splitCont)
   let reqFormat = content.replace(/[#]/g, "%23");
+  let command = reqFormat.split(" ");
   console.log(reqFormat);
-  // splitCont[0] === "#"
-  //   ? // console.log('message processing...')
-  //     axios.post(`${REQ_LINK}/api/ban?tag=${reqFormat}`).then(res => {
-  //       message.reply(res.data.message);
-  //     })
-  //   : null;
-  switch (splitCont[0]) {
+  switch (checkPre[0]) {
     case "#":
       axios.post(`${REQ_LINK}/api/ban?tag=${reqFormat}`).then(res => {
         message.reply(res.data.message);
-      })
-    break;
-    case '!':
-      if(message.content === '!scan'){
-        axios.get(`${REQ_LINK}/api/test`).then(res => {
-          client.channels.cache.get(CHANNEL_ID).send(res.data.message);
-        });
+      });
+      break;
+    case "!":
+      switch (command[0]) {
+        case "!scan":
+          axios.get(`${REQ_LINK}/api/test`).then(res => {
+            client.channels.cache.get(CHANNEL_ID).send(res.data.message);
+          });
+          break;
+        case '!add':
+          axios.post(`${REQ_LINK}/api/ban?tag=${command[1]}`).then(res => {
+            message.reply(res.data.message);
+          });
+          break;
+        case '!list':
+          axios.get(`${REQ_LINK}/api/list`).then(res =>{
+            client.channels.cache.get(CHANNEL_ID).send(res.data.message)
+          } )
+        default:
+          null;
       }
+
+      break;
+    default:
+      null;
   }
 });
 
