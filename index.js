@@ -24,12 +24,25 @@ client.on("message", message => {
   // console.log(splitCont)
   let reqFormat = content.replace(/[#]/g, "%23");
   console.log(reqFormat);
-  splitCont[0] === "#"
-    ? // console.log('message processing...')
+  // splitCont[0] === "#"
+  //   ? // console.log('message processing...')
+  //     axios.post(`${REQ_LINK}/api/ban?tag=${reqFormat}`).then(res => {
+  //       message.reply(res.data.message);
+  //     })
+  //   : null;
+  switch (splitCont[0]) {
+    case "#":
       axios.post(`${REQ_LINK}/api/ban?tag=${reqFormat}`).then(res => {
         message.reply(res.data.message);
       })
-    : null;
+    break;
+    case '!':
+      if(message.content === '!scan'){
+        axios.get(`${REQ_LINK}/api/test`).then(res => {
+          client.channels.cache.get(CHANNEL_ID).send(res.data.message);
+        });
+      }
+  }
 });
 
 client.login(BOT_TOKEN);

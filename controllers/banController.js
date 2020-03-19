@@ -21,9 +21,12 @@ module.exports = {
         return res.status(200).send({ message: "User Already in Ban list" });
       } else {
         db.add_banned_user(tag).then(() => {
-          return res
-            .status(200)
-            .send({ message: `User ${tag} was added to the ban list` });
+          client.playerByTag(tag).then(playerData => {
+            
+            return res
+              .status(200)
+              .send({ message: `User ${tag} '${playerData.name}' was added to the ban list` });
+          })
         });
       }
     });
@@ -63,6 +66,6 @@ module.exports = {
         }
       });
     });
-    setTimeout(() => send(), 1000);
+    setTimeout(() => send(), 2000);
   }
 };
