@@ -6,14 +6,14 @@ let client = clashApi({
   token: API_TOKEN
 });
 
-const guildList = ["#9VG088JL", "#Y2GRV0V", "#9QJUUGUQ"];
+const guildList = ["#9VG088JL", "#Y2GRV0V", "#9QJUUGUQ", "#GQ8VJQ9L"];
 
 module.exports = {
   banUser(req, res) {
     const db = req.app.get("db");
     const { tag } = req.query;
-    console.log('req.query', req.query)
-    console.log('inside ban user in server',tag)
+    console.log("req.query", req.query);
+    console.log("inside ban user in server", tag);
     //!Make sure id is formated as %23 tag no hash when sent to server
     db.check_banned_user(tag).then(result => {
       console.log(result);
