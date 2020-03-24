@@ -39,8 +39,8 @@ client.on("message", message => {
               client.channels.cache.get(CHANNEL_ID).send(res.data.message);
             });
             break;
-          case "!add":
-            axios.post(`${REQ_LINK}/api/ban?tag=%23${command[1]}`).then(res => {
+          case "!ban":
+            axios.post(`${REQ_LINK}/api/ban?tag=${command[1]}`).then(res => {
               message.reply(res.data.message);
             });
             break;
@@ -48,6 +48,7 @@ client.on("message", message => {
             axios.get(`${REQ_LINK}/api/list`).then(res => {
               client.channels.cache.get(CHANNEL_ID).send(res.data.message);
             });
+            break;
           default:
             null;
         }
