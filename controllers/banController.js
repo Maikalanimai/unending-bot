@@ -61,6 +61,14 @@ module.exports = {
           });
         }),
       1500
+    )
+    setTimeout(
+      () => {
+        res.status(200).send({
+          message: `No banned users detected`
+        })
+      },
+      2000
     );
 
     //*WIP update adapted for multiple banned members simultaniously
