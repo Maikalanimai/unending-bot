@@ -138,7 +138,7 @@ module.exports = {
             .toString()
             .replace(/,/g, ", ")}.`
         }),
-      1000
+      1500
     );
   }
 };

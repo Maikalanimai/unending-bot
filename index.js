@@ -40,7 +40,7 @@ client.on("message", message => {
             });
             break;
           case "!add":
-            axios.post(`${REQ_LINK}/api/ban?tag=${command[1]}`).then(res => {
+            axios.post(`${REQ_LINK}/api/ban?tag=%23${command[1]}`).then(res => {
               message.reply(res.data.message);
             });
             break;
