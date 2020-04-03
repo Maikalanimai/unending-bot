@@ -14,11 +14,11 @@ const guildList = [
   "#RQGGLV20" //Betratron
 ];
 const guildLeaderRoleId = [
-  688408385946779745, //Unending War
-  688481460214038567, //General Tso
-  689352805835603995, // LV Lopi
-  693653147301838858, //Lost in Place
-  690445118452269087 //Betatron
+  "688408385946779745", //Unending War
+  "688481460214038567", //General Tso
+  "689352805835603995", // LV Lopi
+  "693653147301838858", //Lost in Place
+  "690445118452269087" //Betatron
 ];
 
 module.exports = {
@@ -93,13 +93,7 @@ module.exports = {
             if (members.includes(e.tag)) {
               client.playerByTag(e.tag).then(playerData => {
                 res.status(200).send({
-                  message: `User ${playerData.name} with a tag of ${
-                    playerData.tag
-                  } is banned and is currently in one of the clans. ${guildLeaderRoleId.forEach(
-                    e => {
-                      return `<@&${e}>`;
-                    }
-                  )}`
+                  message: `User ${playerData.name} with a tag of ${playerData.tag} is banned and is currently in one of the clans. <@&${guildLeaderRoleId[0]}> <@&${guildLeaderRoleId[1]}> <@&${guildLeaderRoleId[2]}> <@&${guildLeaderRoleId[3]}> <@&${guildLeaderRoleId[4]}>`
                 });
               });
             }
