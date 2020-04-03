@@ -6,7 +6,20 @@ let client = clashApi({
   token: API_TOKEN
 });
 
-const guildList = ["#9VG088JL", "#Y2GRV0V", "#9QJUUGUQ", "#GQ8VJQ9L"];
+const guildList = [
+  "#9VG088JL", //unending war
+  "#Y2GRV0V", //General Tso
+  "#9QJUUGUQ", //LV Lopi
+  "#LOLPLYGQ", //Lost in Place
+  "#RQGGLV20" //Betratron
+];
+const guildLeaderRoleId = [
+  688408385946779745, //Unending War
+  688481460214038567, //General Tso
+  689352805835603995, // LV Lopi
+  693653147301838858, //Lost in Place
+  690445118452269087 //Betatron
+];
 
 module.exports = {
   banUser(req, res) {
@@ -37,6 +50,32 @@ module.exports = {
       }
     });
   },
+  unbanUser(req, res) {
+    const db = req.app.get("db");
+    const { tag } = req.query;
+    console.log("inside unban user", tag);
+    db.check_banned_user(tag).then(result => {
+      console.log(result);
+      if (result[0]) {
+        db.unban_user(tag).then(() => {
+          client
+            .playerByTag(tag)
+            .then(playerData => {
+              return res.status(200).send({
+                message: `User ${tag} '${playerData.name}' was removed from the ban list`
+              });
+            })
+            .catch(err => {
+              res.status(200).send({
+                message: `User tag ${tag} was unable to be banned. <@&159764169636184064>`
+              });
+            });
+        });
+      } else {
+        return res.status(200).send({ message: "User is not in the ban list" });
+      }
+    });
+  },
   test(req, res) {
     const db = req.app.get("db");
     let members = [];
@@ -54,22 +93,25 @@ module.exports = {
             if (members.includes(e.tag)) {
               client.playerByTag(e.tag).then(playerData => {
                 res.status(200).send({
-                  message: `User ${playerData.name} with a tag of ${playerData.tag} is banned and is currently in one of the clans.`
+                  message: `User ${playerData.name} with a tag of ${
+                    playerData.tag
+                  } is banned and is currently in one of the clans. ${guildLeaderRoleId.forEach(
+                    e => {
+                      return `<@&${e}>`;
+                    }
+                  )}`
                 });
               });
             }
           });
         }),
       1500
-    )
-    setTimeout(
-      () => {
-        res.status(200).send({
-          message: `No banned users detected`
-        })
-      },
-      2000
     );
+    setTimeout(() => {
+      res.status(200).send({
+        message: `No banned users detected`
+      });
+    }, 2500);
 
     //*WIP update adapted for multiple banned members simultaniously
     // let members = [];
