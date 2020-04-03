@@ -49,6 +49,13 @@ client.on("message", message => {
               client.channels.cache.get(CHANNEL_ID).send(res.data.message);
             });
             break;
+          case "!unban":
+            axios
+              .delete(`${REQ_LINK}/api/unban?tag=${command[1]}`)
+              .then(res => {
+                message.reply(res.data.message);
+              });
+            break;
           default:
             null;
         }
